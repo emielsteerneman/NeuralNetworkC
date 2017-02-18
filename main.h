@@ -6,10 +6,12 @@ typedef struct PropVals PropVals;
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 #include "Neuron.h"
 #include "Link.h"
 #include "Network.h"
+#include "FileHandler.h"
 
 // Struct definitions
 struct PropVals{

@@ -9,20 +9,56 @@ int main(int argc, char* argv[]){
 	// Seed random
 	srand(time(NULL));
 
-	int nInput = 2;
-	int nHidden = 2;
-	int nOutput = 1;
+	// Handle arguments
+	int iterations = 1000000;
+	char* filename = NULL;
 	
-	if(argc > 2){
-		nInput = atoi(argv[1]);
-		nHidden = atoi(argv[2]);
-		nOutput = atoi(argv[3]);
+	int fflag = 0;
+	
+	int flags, opt;
+	int nsecs, tfnd;
+
+	while ((opt = getopt(argc, argv, "n:f:")) != -1) {
+		switch (opt) {
+		case 'n':
+			iterations = atoi(optarg);
+			printf("iteration: %d\n", iterations);
+			break;
+		case 'f':
+			fflag = 1;
+			filename = optarg;
+			printf("filename %s\n", filename);
+			break;
+		case '?':
+			if (optopt == 'n' || optopt == 'f')
+				fprintf (stderr, "Option -%c requires an argument.\n", optopt);
+			else if (isprint (optopt))
+				fprintf (stderr, "Unknown option `-%c'.\n", optopt);
+			else
+				fprintf (stderr, "Unknown option character `\\x%x'.\n", optopt);
+			break;
+		default: /* '?' */
+			fprintf(stderr, "Usage: %s [-t nsecs] [-n] name\n", argv[0]);
+			exit(EXIT_FAILURE);
+	   }
 	}
 
-	Network* network = network_init(nInput, nHidden, nOutput);
+	Network* network;
+	
+	if(fflag){
+		network = fileHander_readNetwork(filename);
+		if(network == NULL){
+			printf("File does not contain a neural network\n");
+			exit(-1);
+		}
+	}else{
+		network = network_init(2, 5, 1);
+	}
+	
+	// network_print(network);
 	
 	int i;
-	for(i = 0; i < 1000000; i++){
+	for(i = 0; i < iterations; i++){
 		int iPv = i % 4;
 		
 		if(iPv == 0){
@@ -49,7 +85,19 @@ int main(int argc, char* argv[]){
 		network_propagate(network);
 		network_train(network);
 		
-		if(1000000 - i <= 4){
+		if(i % (iterations/25) == 0){
+			int counter = 0;
+			int progress = i / (iterations/25);
+			
+			printf("[");
+			for(counter = 0; counter < 25; counter++){
+				if(counter <= progress) printf("-");
+				else printf(" ");
+			}
+			printf("] %d \r", i); fflush(stdout);
+		}
+		
+		if(iterations - i <= 4){
 			printf("\n");
 			printf("Inputs : ");
 			printFloatArr(network->pv->inputs, network->nInput);
@@ -57,9 +105,15 @@ int main(int argc, char* argv[]){
 			printFloatArr(network->pv->targets, network->nOutput);
 			printf("Outputs: ");
 			printFloatArr(network->pv->outputs, network->nOutput);
+			printf("\n");
 		}
 	}
-	return 0;
+	
+	// network_print(network);
+	
+	// fileHander_writeNetwork("networks/XOR.txt", network);
+	
+	exit(EXIT_SUCCESS);
 }
 
 void printFloatArr(float *array, int size){
