@@ -30,5 +30,6 @@ Network* network_init(int nInputs, int nHiddens, int nOutputs);
 void network_propagate(Network* network);
 void network_train(Network* network);
 void network_reset(Network* network);
+void network_print(Network* network);
 
 #endif

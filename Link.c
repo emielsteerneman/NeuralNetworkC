@@ -7,11 +7,15 @@ void link_print(Link* link){
 }
 
 void link_init(Link* link, Neuron* from, Neuron* to, float weight){
+	int log = 0;
+	
 	link->from = from;
 	link->to = to;
 	link->weight = weight;
 	
-	printf("  new ");
-	link_print(link);
-	printf("\n");
+	if(log)  {
+		printf("  new ");
+		link_print(link);
+		printf("\n");
+	}
 }

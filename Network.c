@@ -1,6 +1,7 @@
 #include "Network.h"
 
 Network* network_init(int nInput, int nHidden, int nOutput){
+	int log = 0;
 	Network* network = (Network*) malloc(sizeof(Network));
 	
 	int nLinks = (nInput * nHidden + nHidden * nOutput);
@@ -19,12 +20,12 @@ Network* network_init(int nInput, int nHidden, int nOutput){
 	network->outputLayer = (Neuron**) malloc(sizeof(Neuron*) * nOutput);
 	network->links = (Link**) malloc(sizeof(Link*) * nLinks);
 
-	printf("New network\n  nInput = %d\n  nHidden = %d\n  nOutput = %d\n  nLinks = %d\n", network->nInput, network->nHidden, network->nOutput, network->nLinks);
+	if(log) printf("New network\n  nInput = %d\n  nHidden = %d\n  nOutput = %d\n  nLinks = %d\n", network->nInput, network->nHidden, network->nOutput, network->nLinks);
 	
 	int i, j, offset = 0;
 	
 	// Input layer
-	printf("\nInput layer\n");
+	if(log) printf("\nInput layer\n");
 	for(i = 0; i < nInput; i++){						// For number of neurons in input layer
 		Neuron* n = (Neuron*) malloc(sizeof(Neuron));		// Create neuron
 		neuron_init(n, 0, i, 0, nHidden);					// Init neuron
@@ -32,7 +33,7 @@ Network* network_init(int nInput, int nHidden, int nOutput){
 	}
 	
 	// Hidden layer
-	printf("\nHidden layer\n");
+	if(log) printf("\nHidden layer\n");
 	for(i = 0; i < nHidden; i++){						// For number of neurons in hidden layer
 		Neuron* n = (Neuron*) malloc(sizeof(Neuron));		// Create neuron
 		neuron_init(n, 1, i, nInput, nOutput);				// Init neuron
@@ -40,7 +41,7 @@ Network* network_init(int nInput, int nHidden, int nOutput){
 	}
 	
 	// Output layer
-	printf("\nOutput layer\n");
+	if(log) printf("\nOutput layer\n");
 	for(i = 0; i < nOutput; i++){						// For number of neurons in output layer
 		Neuron* n = (Neuron*) malloc(sizeof(Neuron));		// Create neuron
 		neuron_init(n, 2, i, nHidden, 0);					// Init neuron
@@ -49,7 +50,7 @@ Network* network_init(int nInput, int nHidden, int nOutput){
 	
 	// Create links between input layer and hidden layer
 	int linkCounter = 0;
-	printf("\nInput layer -> Hidden layer\n");
+	if(log) printf("\nInput layer -> Hidden layer\n");
 	for(i = 0; i < nInput; i++){						// For number of neurons in input layer
 		Neuron* nFrom = network->inputLayer[i];				// Get from-neuron
 		for(j = 0; j < nHidden; j++){						// For number of neurons in output layer
@@ -63,7 +64,7 @@ Network* network_init(int nInput, int nHidden, int nOutput){
 	}
 	
 	// Create links between hidden layer and output layer
-	printf("\nHidden layer -> Output layer\n");
+	if(log) printf("\nHidden layer -> Output layer\n");
 	for(i = 0; i < nHidden; i++){						// For number of neurons in hidden layer
 		Neuron* nFrom = network->hiddenLayer[i];			// Get from-neuron
 		for(j = 0; j < nOutput; j++){						// For number of neurons in output layer
@@ -172,13 +173,50 @@ void network_reset(Network* network){
 	}
 }
 
-// network_writeToFile(){
-	// File *f = fopen("network.txt", "w");
-
-	// if (f == NULL){
-		// printf("Error opening file!\n");
-		// exit(1);
-	// }
+void network_print(Network* network){
 	
-	// fclose(f);
-// }
+	int i = 0, j = 0, k = 0;		// Hold arbitrary counters
+	
+	int nNeurons, nLinks;			// Hold number of neurons and links
+
+	// Hold layer sizes
+	int layerSizes[3] = {
+		network->nInput,
+		network->nHidden,
+		network->nOutput
+	};
+	// Hold pointers to layers
+	Neuron** layers[3] = {
+		network->inputLayer,
+		network->hiddenLayer,
+		network->outputLayer
+	};
+	
+	Neuron* neuron;
+	Link* link;
+	
+	printf("========== Network ==========\n");
+	printf("Layers : %d %d %d\n", network->nInput, network->nHidden, network->nOutput);
+	
+	for(i = 0; i < 3; i++){			// For each layer
+		printf("\nLayer %d\n", i);
+		nNeurons = layerSizes[i];		// Get number of neurons
+		
+		for(j = 0; j < nNeurons; j++){	// For each neuron in layer
+			neuron = layers[i][j];			// Get neuron
+			neuron_print(neuron);			// Print neuron
+			
+			nLinks = neuron->nOut;		// Get number of links
+			for(k = 0; k < nLinks; k++){	// For each link of neuron
+				link = neuron->linksOut[k];		// Get link
+				printf("\t");
+				link_print(link);				// Print link
+				printf("\n");
+			}
+		}
+	}
+	
+	printf("=============================\n");
+	
+	return;
+}

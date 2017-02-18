@@ -11,6 +11,8 @@ void neuron_print(Neuron* n){
 }
 
 void neuron_init(Neuron* n, int ilayer, int id, int nIn, int nOut){
+	int log = 0;
+	
 	n->net   = 0;
 	n->out   = 0;
 	n->delta = 0;
@@ -26,8 +28,10 @@ void neuron_init(Neuron* n, int ilayer, int id, int nIn, int nOut){
 	n->ilayer = ilayer;
 	n->id = id;
 	
-	printf("  new ");
-	neuron_print(n);
+	if(log) {
+		printf("  new ");
+		neuron_print(n);
+	}
 }
 
 float neuron_propagate(Neuron* n, Network* network, int depth){
