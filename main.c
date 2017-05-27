@@ -10,7 +10,7 @@ int main(int argc, char* argv[]){
 	srand(time(NULL));
 
 	// Handle arguments
-	int iterations = 1000000;
+	int iterations = 20000000;
 	char* filename = NULL;
 	
 	int fflag = 0;
@@ -52,6 +52,7 @@ int main(int argc, char* argv[]){
 			exit(-1);
 		}
 	}else{
+		printf("\nNew network\n");
 		network = network_init(2, 5, 1);
 	}
 	
@@ -85,12 +86,12 @@ int main(int argc, char* argv[]){
 		network_propagate(network);
 		network_train(network);
 		
-		if(i % (iterations/25) == 0){
+		if(i % (iterations/100) == 0){
 			int counter = 0;
-			int progress = i / (iterations/25);
+			int progress = i / (iterations/100);
 			
 			printf("[");
-			for(counter = 0; counter < 25; counter++){
+			for(counter = 0; counter < 100; counter++){
 				if(counter <= progress) printf("-");
 				else printf(" ");
 			}

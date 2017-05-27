@@ -2,6 +2,7 @@
 
 Network* network_init(int nInput, int nHidden, int nOutput){
 	int log = 0;
+	printf("\nMalloccing network_init\n");
 	Network* network = (Network*) malloc(sizeof(Network));
 	
 	int nLinks = (nInput * nHidden + nHidden * nOutput);

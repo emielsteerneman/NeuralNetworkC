@@ -22,6 +22,7 @@ void neuron_init(Neuron* n, int ilayer, int id, int nIn, int nOut){
 	n->isSet = 0;
 	
 	// Create an array of pointers
+	printf("\nMalloccing Neuron.c\n");
 	n->linksIn  = (Link**) malloc(sizeof(Link*) * nIn);
 	n->linksOut = (Link**) malloc(sizeof(Link*) * nOut);
 	
