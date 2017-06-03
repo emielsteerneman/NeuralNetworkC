@@ -19,6 +19,11 @@ struct Network {
 	
 	PropVals* pv;
 	
+	Neuron*** layers;
+
+	int nLayers;
+	int* layerSizes; 
+
 	Neuron** inputLayer;
 	Neuron** hiddenLayer;
 	Neuron** outputLayer;
@@ -26,7 +31,9 @@ struct Network {
 };
 
 // Functions
-Network* network_init(int nInputs, int nHiddens, int nOutputs);
+//Network* network_init(int nInputs, int nHiddens, int nOutputs);
+Network* network_init(int* layers, int nLayers);
+
 void network_propagate(Network* network);
 void network_train(Network* network);
 void network_reset(Network* network);
