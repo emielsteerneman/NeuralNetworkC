@@ -4,7 +4,7 @@
 	Files are not checked for consistency in any way!
 */
 
-Network* fileHander_readNetwork(char* filename){
+Network* fileHandler_readNetwork(char* filename){
 	FILE* fp;					// Create file pointer
 	fp = fopen(filename, "r");	// Open file for reading
 	if(fp == NULL){
@@ -29,6 +29,8 @@ Network* fileHander_readNetwork(char* filename){
 	// Initialize network
 	network = network_init(layerSizes[0], layerSizes[1], layerSizes[2]);
 	
+	printf("FileHandler : %d %d %d\n", layerSizes[0], layerSizes[1], layerSizes[2]);
+
 	// Hold pointers to layers
 	Neuron** layers[3] = {
 		network->inputLayer,
@@ -58,7 +60,7 @@ Network* fileHander_readNetwork(char* filename){
 	return network;
 }
 
-int fileHander_writeNetwork(char* filename, Network* network){
+int fileHandler_writeNetwork(char* filename, Network* network){
 	FILE* fp;					// Create file pointer
 	fp = fopen(filename, "w");	// Open file for reading
 	if(fp == NULL){

@@ -7,7 +7,7 @@
 #include "Network.h"
 
 // Functions
-Network* fileHander_readNetwork(char* filename);
-int fileHander_writeNetwork(char* filename, Network* network);
+Network* fileHandler_readNetwork(char* filename);
+int fileHandler_writeNetwork(char* filename, Network* network);
 
 #endif
