@@ -33,5 +33,6 @@ void neuron_init(Neuron* n, int ilayer, int id, int nIn, int nOut);
 float neuron_propagate(Neuron* n, Network* network, int depth);
 float sigmoid(float f);
 void indent(int depth);
+void neuron_str(Neuron* n);
 
 #endif

@@ -7,6 +7,7 @@ typedef struct PropVals PropVals;
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <time.h> 
 
 #include "Neuron.h"
 #include "Link.h"

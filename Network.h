@@ -12,21 +12,18 @@ typedef struct Network Network;
 
 // Struct definitions
 struct Network {
-	int nInput;
-	int nHidden;
-	int nOutput;
+	int* layerSizes; 
+	int nLayers;
 	int nLinks;
-	
+
+	Neuron** inputLayer;
+	Neuron** outputLayer;
+	int nInputs;
+	int nOutputs;
+
 	PropVals* pv;
 	
 	Neuron*** layers;
-
-	int nLayers;
-	int* layerSizes; 
-
-	Neuron** inputLayer;
-	Neuron** hiddenLayer;
-	Neuron** outputLayer;
 	Link** links;
 };
 

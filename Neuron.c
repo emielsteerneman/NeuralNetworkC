@@ -11,6 +11,7 @@ void neuron_print(Neuron* n){
 }
 
 void neuron_init(Neuron* n, int ilayer, int id, int nIn, int nOut){
+	
 	int log = 0;
 	
 	n->net   = 0;
@@ -35,14 +36,14 @@ void neuron_init(Neuron* n, int ilayer, int id, int nIn, int nOut){
 }
 
 float neuron_propagate(Neuron* n, Network* network, int depth){
-	int log = 0;
+	int log = 1;
 	if(log) printf("\n");
 	if(log) indent(depth);
 	if(log) printf("(%d,%d)", n->ilayer, n->id);
 	
 	// If neuron is already set
 	if(n->isSet == 1){
-		if(log) printf(" set!", n->ilayer, n->id);
+		if(log) printf(" set! %d %d\n", n->ilayer, n->id);
 	}else
 	
 	// If neuron is input
